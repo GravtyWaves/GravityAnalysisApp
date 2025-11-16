@@ -14,8 +14,8 @@ $services = @(
         Color = "Green"
     },
     @{
-        Name = "Gravity_TechAnalysis"
-        Path = "$projectRoot\Gravity_TechAnalysis"
+        Name = "GravityTechAnalysis"
+        Path = "$projectRoot\GravityTechAnalysis"
         Port = 5002
         Color = "Yellow"
     },
@@ -26,8 +26,8 @@ $services = @(
         Color = "Magenta"
     },
     @{
-        Name = "Gravity_FundamentalAnalysis"
-        Path = "$projectRoot\Gravity_FundamentalAnalysis"
+        Name = "GravityFundamentalAnalysis"
+        Path = "$projectRoot\GravityFundamentalAnalysis"
         Port = 5004
         Color = "Blue"
     }
