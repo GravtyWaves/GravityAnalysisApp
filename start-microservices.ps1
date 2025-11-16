@@ -33,6 +33,10 @@ $services = @(
     }
 )
 
+Write-Host "Project root: $projectRoot" -ForegroundColor Gray
+Write-Host "Services to start: $($services.Count)" -ForegroundColor Gray
+Write-Host ""
+
 # Check if all services exist
 $allExist = $true
 foreach ($service in $services) {
@@ -89,7 +93,9 @@ $allRunning = $true
 foreach ($service in $services) {
     try {
         $response = Invoke-WebRequest -Uri "http://localhost:$($service.Port)/health" -TimeoutSec 10 -ErrorAction Stop
-        Write-Host "✅ $($service.Name) is running on port $($service.Port)" -ForegroundColor Green
+        if ($response.StatusCode -eq 200) {
+            Write-Host "✅ $($service.Name) is running on port $($service.Port)" -ForegroundColor Green
+        }
     } catch {
         Write-Host "❌ $($service.Name) is NOT responding on port $($service.Port)" -ForegroundColor Red
         $allRunning = $false
