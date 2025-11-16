@@ -871,6 +871,180 @@ git merge hotfix/ISSUE-789-critical-security-fix
 
 ---
 
+## Repository Cleanup Workflow (Carlos - After TODO Completion)
+
+### Trigger
+**When**: All todos in current todo list marked as "completed"
+**Frequency**: After each TODO list completion
+**Owner**: Carlos Mendes (Git Workflow Manager & Repository Cleanup Specialist)
+
+### Cleanup Process Flow
+
+```
+TODO List Completed
+   ↓
+Trigger Cleanup Scan
+   ↓
+Scan Repository Issues:
+├─ Duplicate files (same content hash)
+├─ Unused files (not imported/referenced)
+├─ Temporary files (*.tmp, *.bak, *.log, etc.)
+├─ Empty directories
+└─ Large files (>10MB)
+   ↓
+Generate Cleanup Report
+   ↓
+Execute Dry-Run (Safety Check)
+   ↓
+Review Results
+   ↓
+Execute Actual Cleanup:
+├─ Remove duplicates
+├─ Archive unused files to archive/
+├─ Remove temp files
+└─ Remove empty directories
+   ↓
+Commit Changes:
+"chore(cleanup): Remove unused and duplicate files"
+   ↓
+Push to GitHub
+   ↓
+Notify Team
+   ↓
+Repository Clean! ✨
+```
+
+### What Gets Cleaned
+
+**Duplicate Files**:
+- Files with identical content (MD5 hash match)
+- Keep first occurrence, remove others
+- Example: `old_base.html` removed if duplicate of `base.html`
+
+**Unused Files**:
+- Python files never imported
+- JavaScript files not referenced
+- Templates not used in routes
+- Archived to `archive/` folder (not deleted)
+
+**Temporary Files**:
+- `*.tmp` - Temporary files
+- `*.bak` - Backup files
+- `*.swp` - Vim swap files
+- `*.log` - Log files (unless in logs/ folder)
+- `*.cache` - Cache files
+- `*~` - Editor backup files
+- `.DS_Store` - macOS metadata
+
+**Empty Directories**:
+- Directories with no files
+- Directories only containing .gitkeep are kept
+
+**Large Files** (Manual Review):
+- Files >10MB flagged for review
+- Team confirmation before removal
+
+### Safety Rules
+
+**Never Touch**:
+- `.git/` directory
+- `venv/`, `node_modules/`, `__pycache__/`
+- `.env`, `.env.local`, `.env.production`
+- `LICENSE`, `LICENSE.txt`
+- `README.md`, `README_*.md`
+- Files modified in last 24 hours
+- Files in active development
+
+**Always Archive, Never Delete**:
+- Unused files moved to `archive/` folder
+- Git history preserves all files
+- Can recover if needed
+
+**Dry-Run First**:
+- Always test before executing
+- Show what would be done
+- No actual changes in dry-run mode
+
+### Cleanup Report Example
+
+```markdown
+# Repository Cleanup Report
+**Generated**: 2024-11-16 18:30:00
+
+## 📋 Duplicate Files (3 found)
+- **Keep**: templates/base.html
+  **Remove**: templates/old_base.html
+  
+- **Keep**: services/market_data_service.py
+  **Remove**: services/market_service_backup.py
+
+## 🗑️ Unused Files (5 found)
+- utils/deprecated_helper.py (never imported)
+- services/old_api.py (never imported)
+- templates/legacy_layout.html (not referenced)
+
+## 🧹 Temporary Files (12 found)
+- database/migration.tmp
+- services/.market_service.py.swp
+- app.log
+- (... 9 more)
+
+## 📁 Empty Directories (2 found)
+- old_migrations/
+- deprecated/
+
+## Actions Summary
+- Remove: 3 duplicates
+- Archive: 5 unused files
+- Delete: 12 temp files
+- Remove: 2 empty dirs
+- **Total**: 22 files affected
+```
+
+### Commit Message Format
+
+```
+chore(cleanup): Remove unused and duplicate files
+
+Automated cleanup after TODO list completion:
+- Removed 3 duplicate files
+  * templates/old_base.html (duplicate of base.html)
+  * services/market_service_backup.py (duplicate)
+  * (...)
+- Archived 5 unused files to archive/
+  * utils/deprecated_helper.py (never imported)
+  * (...)
+- Removed 12 temporary files
+  * *.tmp, *.bak, *.log files
+- Removed 2 empty directories
+  * old_migrations/, deprecated/
+
+Files affected: 22
+Repository size reduced by 15%
+```
+
+### Team Notification
+
+```
+🧹 Repository Cleanup Completed!
+
+📊 Summary:
+✅ Duplicates removed: 3 files
+✅ Unused files archived: 5 files
+✅ Temp files removed: 12 files
+✅ Empty dirs removed: 2 directories
+
+💾 Repository size reduced by 15%
+📦 Total actions: 22 files
+
+All unused files safely archived to archive/ folder.
+Repository is now clean and organized! ✨
+
+Commit: 5e8f9a2 - chore(cleanup): Remove unused and duplicate files
+```
+
+---
+
 ## Workflow Summary
 
 ### Daily Developer Workflow
@@ -896,6 +1070,7 @@ Tuesday:   Development, backlog refinement
 Wednesday: Development, technical review
 Thursday:  Development, code freeze (Week 2)
 Friday:    Demo prep (Week 1), Sprint review & retro (Week 2)
+           + Automatic cleanup after TODO completion
 ```
 
 ### Monthly Activities
@@ -907,6 +1082,22 @@ Friday:    Demo prep (Week 1), Sprint review & retro (Week 2)
 - Documentation review
 - Team health check
 - Architecture review
+- Repository deep cleanup (manual review)
+```
+
+### Automated Background Tasks
+
+```
+Carlos (Git Workflow Manager):
+- Every 30 min: Check uncommitted changes
+  └─ If >50 files → Auto-organize commits
+  
+- After TODO completion: Repository cleanup
+  ├─ Scan for duplicates
+  ├─ Find unused files
+  ├─ Remove temp files
+  ├─ Clean empty directories
+  └─ Commit & push cleanup
 ```
 
 ---

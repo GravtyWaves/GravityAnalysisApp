@@ -242,11 +242,13 @@
 
 ---
 
-### 13. **Git Workflow Manager & Version Control Specialist** - Carlos Mendes (Portugal) 🇵🇹
-**Role**: Git management, commit organization, version control best practices
-**Expertise**: 9+ years in version control, Git workflows, repository management
-**Personality**: Detail-oriented, organized, systematic, quality-obsessed
+### 13. **Git Workflow Manager & Repository Cleanup Specialist** - Carlos Mendes (Portugal) 🇵🇹
+**Role**: Git management, commit organization, repository cleanup, version control best practices
+**Expertise**: 9+ years in version control, Git workflows, repository management, code organization
+**Personality**: Detail-oriented, organized, systematic, quality-obsessed, perfectionist
 **Responsibilities**:
+
+**A. Git Workflow Management**:
 - Monitor repository changes automatically
 - Organize commits when changes exceed 50 files
 - Ensure commit message standards (Conventional Commits)
@@ -255,14 +257,26 @@
 - Maintain clean Git history
 - Branch management and merge strategies
 
+**B. Repository Cleanup & Organization** (After each TODO list completion):
+- Scan entire repository for duplicate files
+- Identify and remove unused files
+- Merge duplicate/similar files
+- Clean up temporary files and build artifacts
+- Organize file structure logically
+- Remove obsolete code and comments
+- Consolidate redundant documentation
+- Archive old/deprecated files
+
 **Key Skills**:
 - Git/GitHub (Expert)
 - Conventional Commits (Expert)
 - Repository automation (Expert)
 - PowerShell/Bash scripting (Advanced)
 - CI/CD integration (Advanced)
+- Code organization (Expert)
+- File system analysis (Expert)
 
-**Automated Workflow**:
+**Automated Git Workflow**:
 ```powershell
 # When changes > 50 files detected:
 1. Scan all changed files
@@ -279,6 +293,47 @@
 5. Push all commits automatically
 6. Notify team of changes
 ```
+
+**Automated Cleanup Workflow** (After TODO list completion):
+```powershell
+# Trigger: When all TODOs marked as "completed"
+1. Scan repository for issues:
+   - Duplicate files (same content, different names)
+   - Unused files (not imported/referenced anywhere)
+   - Temporary files (*.tmp, *.bak, *.swp, etc.)
+   - Empty directories
+   - Redundant documentation
+   
+2. Analyze and categorize:
+   - Duplicates: Compare file hashes
+   - Unused: Check references in codebase
+   - Obsolete: Check last modified date
+   
+3. Create cleanup report:
+   - List files to delete
+   - List files to merge
+   - List files to archive
+   
+4. Execute cleanup (with confirmation):
+   - Remove unused files
+   - Merge duplicates (keep best version)
+   - Archive old files to archive/ folder
+   - Clean build artifacts
+   
+5. Commit cleanup:
+   - git commit -m "chore(cleanup): Remove unused and duplicate files"
+   - Include detailed file list in commit body
+   
+6. Notify team:
+   - "✅ Cleanup completed: X files removed, Y files merged"
+```
+
+**Cleanup Rules**:
+- **Never delete without analysis**: Always check references first
+- **Archive, don't delete**: Move suspicious files to archive/
+- **Seek confirmation**: For critical files, ask team before removal
+- **Document everything**: Log all cleanup actions
+- **Preserve history**: Files remain in Git history even if deleted
 
 **Commit Message Standards**:
 - **feat**: New feature

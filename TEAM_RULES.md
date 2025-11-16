@@ -591,10 +591,11 @@ chore(setup): Update project configuration
 ```
 
 **Your Responsibility**:
-- Write code, don't worry about commits
-- When you have >50 changed files, Carlos handles it
-- Focus on quality code, not Git organization
-- Trust the automated workflow
+- Write code, don't worry about commits OR cleanup
+- When you have >50 changed files, Carlos handles commits
+- When all TODOs completed, Carlos handles cleanup
+- Focus on quality code, not Git or file organization
+- Trust the automated workflows
 
 **Benefits**:
 - ✅ Clean Git history always
@@ -603,6 +604,96 @@ chore(setup): Update project configuration
 - ✅ Easy to track changes
 - ✅ Easy to revert if needed
 - ✅ No work lost
+- ✅ No duplicate files
+- ✅ No unused files cluttering repository
+- ✅ Always organized and clean codebase
+
+---
+
+## 🧹 AUTOMATED REPOSITORY CLEANUP
+
+### Cleanup Manager - Carlos Mendes
+
+**Trigger**: When ALL todos in current list marked as "completed"
+
+**Automatic Actions**:
+1. 🔍 Scan entire repository for issues:
+   - Duplicate files (same content, different names)
+   - Unused files (not imported/referenced)
+   - Temporary files (*.tmp, *.bak, *.log, etc.)
+   - Empty directories
+   - Large files that might not belong (>10MB)
+
+2. 📊 Generate cleanup report:
+   - List all duplicates found
+   - List all unused files
+   - List all temp files
+   - Recommend actions
+
+3. 🧪 Dry-run first (safety):
+   - Show what WOULD be done
+   - No actual changes yet
+   - Review for safety
+
+4. 🚀 Execute cleanup:
+   - Remove duplicate files (keep first occurrence)
+   - Archive unused files to archive/ folder (don't delete!)
+   - Remove temporary files
+   - Remove empty directories
+
+5. 📝 Commit cleanup:
+   ```
+   chore(cleanup): Remove unused and duplicate files
+   
+   Automated cleanup after TODO list completion:
+   - Removed 3 duplicate files
+   - Archived 5 unused files
+   - Removed 12 temporary files
+   - Removed 2 empty directories
+   
+   Files affected: 22
+   ```
+
+6. 📢 Notify team:
+   "✅ Cleanup completed: 22 files affected. Repository is now clean!"
+
+**Safety Rules**:
+- ⚠️ Archive, don't delete (files go to archive/ folder)
+- ⚠️ Always dry-run first
+- ⚠️ Never touch critical files (.git/, venv/, .env, LICENSE, README)
+- ⚠️ Preserve Git history (deleted files still in history)
+- ⚠️ Seek confirmation for large files (>1MB)
+
+**What Gets Cleaned**:
+✅ Duplicate files (same content hash)
+✅ Unused Python files (never imported)
+✅ Temp files (*.tmp, *.bak, *.swp, *.log, *.cache, *~)
+✅ Empty directories
+✅ Old backup files
+
+**What NEVER Gets Touched**:
+❌ .git/ directory
+❌ venv/, node_modules/, __pycache__/
+❌ .env files
+❌ LICENSE files
+❌ README files
+❌ Current working files
+❌ Files modified in last 24 hours
+
+**Example Cleanup**:
+```
+Before cleanup: 150 files
+Issues found:
+- 3 duplicate templates
+- 5 unused service files
+- 12 .tmp files
+- 2 empty directories
+
+After cleanup: 128 files
+✅ Removed: 22 files
+✅ Repository size reduced by 15%
+✅ No functionality lost (unused files archived)
+```
 
 ---
 
