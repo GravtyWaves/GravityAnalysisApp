@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}لیست نمادها - گراویتی آنالیزر{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2>
+                <i class="fas fa-list"></i> لیست نمادها
+            </h2>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <input type="text" class="form-control search-box" id="symbolSearch" placeholder="جستجوی نماد، نام شرکت یا صنعت...">
+        </div>
+        <div class="col-md-6 text-start">
+            <button class="btn btn-primary" onclick="updateAllData()">
+                <i class="fas fa-sync"></i> به‌روزرسانی همه
+            </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>نماد</th>
+                            <th>نام شرکت</th>
+                            <th>صنعت</th>
+                            <th>بازار</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="symbolsTable">
+                        {% if symbols %}
+                            {% for symbol in symbols %}
+                            <tr>
+                                <td><strong>{{ symbol.code }}</strong></td>
+                                <td>{{ symbol.name }}</td>
+                                <td>{{ symbol.industry or '-' }}</td>
+                                <td>
+                                    <span class="badge bg-info">{{ symbol.market or 'بورس' }}</span>
+                                </td>
+                                <td>
+                                    <a href="/symbol/{{ symbol.code }}" class="btn btn-sm btn-primary">
+                                        <i class="fas fa-eye"></i> مشاهده
+                                    </a>
+                                    <a href="/technical-analysis/{{ symbol.code }}" class="btn btn-sm btn-info">
+                                        <i class="fas fa-chart-line"></i> تحلیل تکنیکال
+                                    </a>
+                                    <a href="/fundamental-analysis/{{ symbol.code }}" class="btn btn-sm btn-success">
+                                        <i class="fas fa-calculator"></i> تحلیل بنیادی
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center">
+                                    <p class="text-muted">هیچ نمادی یافت نشد</p>
+                                    <button class="btn btn-primary" onclick="loadSymbols()">
+                                        <i class="fas fa-download"></i> دریافت نمادها
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('symbolSearch').addEventListener('input', function(e) {
+        const query = e.target.value.toLowerCase();
+        const rows = document.querySelectorAll('#symbolsTable tr');
+        
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(query) ? '' : 'none';
+        });
+    });
+    
+    function loadSymbols() {
+        showLoading('symbolsTable');
+        
+        axios.get('/api/market/symbols')
+            .then(response => {
+                if (response.data.success) {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error loading symbols:', error);
+                alert('خطا در دریافت نمادها');
+            });
+    }
+    
+    function updateAllData() {
+        if (confirm('آیا مطمئن هستید؟ این عملیات ممکن است زمان‌بر باشد.')) {
+            alert('به‌روزرسانی در حال انجام است...');
+        }
+    }
+</script>
+{% endblock %}

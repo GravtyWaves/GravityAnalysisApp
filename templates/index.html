@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block title %}داشبورد - گراویتی آنالیزر{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-4 text-center mb-4">
+                <i class="fas fa-chart-line"></i>
+                تحلیل‌گر بازار سرمایه گراویتی
+            </h1>
+            <p class="lead text-center text-muted">
+                تحلیل بنیادی و تکنیکال نمادهای بورس ایران
+            </p>
+        </div>
+    </div>
+
+    <!-- Market Overview -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3 class="mb-3">
+                <i class="fas fa-globe"></i> وضعیت کلی بازار
+            </h3>
+        </div>
+        
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="metric-card bg-primary text-white">
+                <i class="fas fa-chart-line fa-2x mb-2"></i>
+                <div class="metric-label">شاخص کل</div>
+                <div class="metric-value" id="totalIndex">2,150,000</div>
+                <small class="indicator-positive">
+                    <i class="fas fa-arrow-up"></i> +0.23%
+                </small>
+            </div>
+        </div>
+        
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="metric-card bg-success text-white">
+                <i class="fas fa-plus fa-2x mb-2"></i>
+                <div class="metric-label">نمادهای مثبت</div>
+                <div class="metric-value" id="positiveSymbols">185</div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="metric-card bg-danger text-white">
+                <i class="fas fa-minus fa-2x mb-2"></i>
+                <div class="metric-label">نمادهای منفی</div>
+                <div class="metric-value" id="negativeSymbols">142</div>
+            </div>
+        </div>
+        
+        <div class="col-md-3 col-sm-6 mb-3">
+            <div class="metric-card bg-info text-white">
+                <i class="fas fa-exchange-alt fa-2x mb-2"></i>
+                <div class="metric-label">ارزش معاملات</div>
+                <div class="metric-value" id="totalValue">125 هزار میلیارد</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h3 class="mb-3">
+                <i class="fas fa-bolt"></i> دسترسی سریع
+            </h3>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-list fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">لیست نمادها</h5>
+                    <p class="card-text">مشاهده تمامی نمادهای موجود در بازار</p>
+                    <a href="/symbols" class="btn btn-primary">
+                        <i class="fas fa-arrow-left"></i> مشاهده
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-upload fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">آپلود گزارش مالی</h5>
+                    <p class="card-text">آپلود فایل‌های MHTML گزارشات کدال</p>
+                    <a href="/upload" class="btn btn-success">
+                        <i class="fas fa-arrow-left"></i> آپلود
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-bar fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">تحلیل تکنیکال</h5>
+                    <p class="card-text">انجام تحلیل تکنیکال نمادها</p>
+                    <button class="btn btn-info" onclick="showQuickAnalysis()">
+                        <i class="fas fa-arrow-left"></i> شروع تحلیل
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Symbols -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-star"></i> نمادهای پربازدید
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>نماد</th>
+                                    <th>نام</th>
+                                    <th>قیمت</th>
+                                    <th>تغییر</th>
+                                    <th>حجم</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="popularSymbols">
+                                <tr>
+                                    <td><strong>فولاد</strong></td>
+                                    <td>فولاد مبارکه اصفهان</td>
+                                    <td>10,500 ریال</td>
+                                    <td class="indicator-positive">
+                                        <i class="fas fa-arrow-up"></i> +1.45%
+                                    </td>
+                                    <td>1.5M</td>
+                                    <td>
+                                        <a href="/symbol/فولاد" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-eye"></i> مشاهده
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>شپنا</strong></td>
+                                    <td>پالایش نفت اصفهان</td>
+                                    <td>15,250 ریال</td>
+                                    <td class="indicator-negative">
+                                        <i class="fas fa-arrow-down"></i> -0.82%
+                                    </td>
+                                    <td>950K</td>
+                                    <td>
+                                        <a href="/symbol/شپنا" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-eye"></i> مشاهده
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>خودرو</strong></td>
+                                    <td>ایران خودرو</td>
+                                    <td>8,750 ریال</td>
+                                    <td class="indicator-positive">
+                                        <i class="fas fa-arrow-up"></i> +2.15%
+                                    </td>
+                                    <td>2.1M</td>
+                                    <td>
+                                        <a href="/symbol/خودرو" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-eye"></i> مشاهده
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showQuickAnalysis() {
+        const symbol = prompt('نماد مورد نظر را وارد کنید:');
+        if (symbol) {
+            window.location.href = `/technical-analysis/${symbol}`;
+        }
+    }
+    
+    // Load market data on page load
+    window.addEventListener('load', function() {
+        loadMarketOverview();
+    });
+    
+    function loadMarketOverview() {
+        // In production, this will call the actual API
+        // For now, the data is hardcoded in HTML
+        console.log('Market overview loaded');
+    }
+</script>
+{% endblock %}

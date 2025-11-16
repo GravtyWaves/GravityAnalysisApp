@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+
+{% block title %}تحلیل تکنیکال {{ symbol_code }} - گراویتی آنالیزر{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2>
+                <i class="fas fa-chart-line"></i> تحلیل تکنیکال: {{ symbol_code }}
+            </h2>
+        </div>
+        <div class="col-md-4 text-end">
+            <button class="btn btn-primary" onclick="runAnalysis()">
+                <i class="fas fa-play"></i> انجام تحلیل
+            </button>
+            <a href="/symbol/{{ symbol_code }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-right"></i> بازگشت
+            </a>
+        </div>
+    </div>
+
+    <div id="analysisResult" style="display: none;">
+        <!-- Summary Card -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-pie"></i> خلاصه تحلیل
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-3">
+                                <h5>سیگنال کلی</h5>
+                                <h3 id="overallSignal" class="indicator-neutral">-</h3>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>قدرت سیگنال</h5>
+                                <h3 id="signalStrength">-</h3>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>سیگنال‌های خرید</h5>
+                                <h3 id="buySignals" class="indicator-positive">-</h3>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>سیگنال‌های فروش</h5>
+                                <h3 id="sellSignals" class="indicator-negative">-</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Indicators -->
+        <div class="row">
+            <!-- RSI -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-tachometer-alt"></i> RSI (شاخص قدرت نسبی)
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center mb-3">
+                            <div class="col-6">
+                                <h5>مقدار فعلی</h5>
+                                <h3 id="rsiValue">-</h3>
+                            </div>
+                            <div class="col-6">
+                                <h5>سیگنال</h5>
+                                <h3 id="rsiSignal">-</h3>
+                            </div>
+                        </div>
+                        <canvas id="rsiChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MACD -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-wave-square"></i> MACD
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center mb-3">
+                            <div class="col-4">
+                                <h6>MACD</h6>
+                                <p id="macdValue">-</p>
+                            </div>
+                            <div class="col-4">
+                                <h6>Signal</h6>
+                                <p id="macdSignalValue">-</p>
+                            </div>
+                            <div class="col-4">
+                                <h6>Histogram</h6>
+                                <p id="macdHistValue">-</p>
+                            </div>
+                        </div>
+                        <canvas id="macdChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Moving Averages -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-area"></i> میانگین‌های متحرک
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>MA5:</th>
+                                <td id="ma5">-</td>
+                                <th>MA10:</th>
+                                <td id="ma10">-</td>
+                            </tr>
+                            <tr>
+                                <th>MA20:</th>
+                                <td id="ma20">-</td>
+                                <th>MA50:</th>
+                                <td id="ma50">-</td>
+                            </tr>
+                            <tr>
+                                <th>قیمت فعلی:</th>
+                                <td colspan="3" id="currentPrice">-</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bollinger Bands -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-compress-arrows-alt"></i> باندهای بولینگر
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>باند بالا:</th>
+                                <td id="bbUpper">-</td>
+                            </tr>
+                            <tr>
+                                <th>میانه:</th>
+                                <td id="bbMiddle">-</td>
+                            </tr>
+                            <tr>
+                                <th>باند پایین:</th>
+                                <td id="bbLower">-</td>
+                            </tr>
+                            <tr>
+                                <th>سیگنال:</th>
+                                <td id="bbSignal">-</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loadingMsg" class="text-center" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">در حال بارگذاری...</span>
+        </div>
+        <p class="mt-3">در حال انجام تحلیل تکنیکال...</p>
+    </div>
+</div>
+
+<script>
+    function runAnalysis() {
+        document.getElementById('loadingMsg').style.display = 'block';
+        document.getElementById('analysisResult').style.display = 'none';
+        
+        axios.get('/api/technical/analyze/{{ symbol_code }}')
+            .then(response => {
+                if (response.data.success) {
+                    displayAnalysisResults(response.data.data);
+                } else {
+                    alert('خطا: ' + response.data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('خطا در انجام تحلیل');
+            })
+            .finally(() => {
+                document.getElementById('loadingMsg').style.display = 'none';
+            });
+    }
+    
+    function displayAnalysisResults(data) {
+        document.getElementById('analysisResult').style.display = 'block';
+        
+        // Summary
+        const summary = data.summary || {};
+        document.getElementById('overallSignal').textContent = summary.overall_signal || '-';
+        document.getElementById('signalStrength').textContent = (summary.strength || 0).toFixed(1) + '%';
+        document.getElementById('buySignals').textContent = summary.buy_signals || 0;
+        document.getElementById('sellSignals').textContent = summary.sell_signals || 0;
+        
+        // RSI
+        const rsi = data.indicators?.RSI || {};
+        document.getElementById('rsiValue').textContent = (rsi.value || 0).toFixed(2);
+        document.getElementById('rsiSignal').textContent = rsi.signal || '-';
+        
+        // MACD
+        const macd = data.indicators?.MACD || {};
+        document.getElementById('macdValue').textContent = (macd.macd || 0).toFixed(2);
+        document.getElementById('macdSignalValue').textContent = (macd.signal || 0).toFixed(2);
+        document.getElementById('macdHistValue').textContent = (macd.histogram || 0).toFixed(2);
+        
+        // Moving Averages
+        const ma = data.indicators?.MA || {};
+        document.getElementById('ma5').textContent = formatNumber(ma.MA5 || 0);
+        document.getElementById('ma10').textContent = formatNumber(ma.MA10 || 0);
+        document.getElementById('ma20').textContent = formatNumber(ma.MA20 || 0);
+        document.getElementById('ma50').textContent = formatNumber(ma.MA50 || 0);
+        document.getElementById('currentPrice').textContent = formatNumber(ma.current_price || 0);
+        
+        // Bollinger Bands
+        const bb = data.indicators?.BB || {};
+        document.getElementById('bbUpper').textContent = formatNumber(bb.upper || 0);
+        document.getElementById('bbMiddle').textContent = formatNumber(bb.middle || 0);
+        document.getElementById('bbLower').textContent = formatNumber(bb.lower || 0);
+        document.getElementById('bbSignal').textContent = bb.signal || '-';
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}{{ symbol.name }} - گراویتی آنالیزر{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2>
+                <i class="fas fa-chart-line"></i> {{ symbol.name }}
+            </h2>
+            <p class="text-muted">
+                نماد: <strong>{{ symbol.code }}</strong> |
+                صنعت: {{ symbol.industry or '-' }} |
+                بازار: {{ symbol.market or 'بورس' }}
+            </p>
+        </div>
+        <div class="col-md-4 text-end">
+            <button class="btn btn-primary" onclick="updateData()">
+                <i class="fas fa-sync"></i> به‌روزرسانی
+            </button>
+            <a href="/symbols" class="btn btn-secondary">
+                <i class="fas fa-arrow-right"></i> بازگشت
+            </a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i> اطلاعات کلی
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <th>نام شرکت:</th>
+                            <td>{{ symbol.company_name or symbol.name }}</td>
+                            <th>نام لاتین:</th>
+                            <td>{{ symbol.name_en or '-' }}</td>
+                        </tr>
+                        <tr>
+                            <th>صنعت:</th>
+                            <td>{{ symbol.industry or '-' }}</td>
+                            <th>بخش:</th>
+                            <td>{{ symbol.sector or '-' }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-chart-line"></i> تحلیل تکنیکال
+                </div>
+                <div class="card-body text-center">
+                    <p>مشاهده تحلیل تکنیکال کامل این نماد</p>
+                    <a href="/technical-analysis/{{ symbol.code }}" class="btn btn-info">
+                        <i class="fas fa-chart-line"></i> مشاهده تحلیل تکنیکال
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-calculator"></i> تحلیل بنیادی
+                </div>
+                <div class="card-body text-center">
+                    <p>مشاهده تحلیل بنیادی و نسبت‌های مالی</p>
+                    <a href="/fundamental-analysis/{{ symbol.code }}" class="btn btn-success">
+                        <i class="fas fa-calculator"></i> مشاهده تحلیل بنیادی
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateData() {
+        if (confirm('داده‌های این نماد به‌روزرسانی شود?')) {
+            showLoading('content');
+            
+            axios.post('/api/market/update/{{ symbol.code }}')
+                .then(response => {
+                    if (response.data.success) {
+                        alert('داده‌ها با موفقیت به‌روزرسانی شد');
+                        location.reload();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error updating data:', error);
+                    alert('خطا در به‌روزرسانی');
+                });
+        }
+    }
+</script>
+{% endblock %}

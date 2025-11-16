@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block title %}تحلیل بنیادی {{ symbol_code }} - گراویتی آنالیزر{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h2>
+                <i class="fas fa-calculator"></i> تحلیل بنیادی: {{ symbol_code }}
+            </h2>
+        </div>
+        <div class="col-md-4 text-end">
+            <button class="btn btn-primary" onclick="runAnalysis()">
+                <i class="fas fa-play"></i> انجام تحلیل
+            </button>
+            <a href="/symbol/{{ symbol_code }}" class="btn btn-secondary">
+                <i class="fas fa-arrow-right"></i> بازگشت
+            </a>
+        </div>
+    </div>
+
+    <div id="analysisResult" style="display: none;">
+        <!-- Summary Card -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-star"></i> ارزیابی کلی
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-4">
+                                <h5>رتبه‌بندی</h5>
+                                <h2 id="rating" class="text-primary">-</h2>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>امتیاز</h5>
+                                <h2 id="score">-</h2>
+                            </div>
+                            <div class="col-md-4">
+                                <h5>توصیه</h5>
+                                <p id="recommendation" class="mt-2">-</p>
+                            </div>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-success"><i class="fas fa-check-circle"></i> نقاط قوت</h6>
+                                <ul id="strengths"></ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-danger"><i class="fas fa-times-circle"></i> نقاط ضعف</h6>
+                                <ul id="weaknesses"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Financial Ratios -->
+        <div class="row">
+            <!-- Liquidity Ratios -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-water"></i> نسبت‌های نقدینگی
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>نسبت جاری:</th>
+                                <td id="currentRatio">-</td>
+                            </tr>
+                            <tr>
+                                <th>نسبت آنی:</th>
+                                <td id="quickRatio">-</td>
+                            </tr>
+                        </table>
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i>
+                            نسبت جاری بالای 1.5 مطلوب است
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profitability Ratios -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-coins"></i> نسبت‌های سودآوری
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>حاشیه سود ناخالص:</th>
+                                <td id="grossMargin">-</td>
+                            </tr>
+                            <tr>
+                                <th>حاشیه سود عملیاتی:</th>
+                                <td id="operatingMargin">-</td>
+                            </tr>
+                            <tr>
+                                <th>حاشیه سود خالص:</th>
+                                <td id="netMargin">-</td>
+                            </tr>
+                            <tr>
+                                <th>ROA:</th>
+                                <td id="roa">-</td>
+                            </tr>
+                            <tr>
+                                <th>ROE:</th>
+                                <td id="roe">-</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leverage Ratios -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-balance-scale"></i> نسبت‌های اهرمی
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>بدهی به حقوق صاحبان سهام:</th>
+                                <td id="debtToEquity">-</td>
+                            </tr>
+                            <tr>
+                                <th>بدهی به دارایی:</th>
+                                <td id="debtToAssets">-</td>
+                            </tr>
+                        </table>
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle"></i>
+                            نسبت بدهی پایین‌تر نشان‌دهنده ریسک کمتر است
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Efficiency Ratios -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-cogs"></i> نسبت‌های کارایی
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>گردش دارایی‌ها:</th>
+                                <td id="assetTurnover">-</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Per Share Data -->
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-share"></i> اطلاعات هر سهم
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <tr>
+                                <th>EPS (سود هر سهم):</th>
+                                <td id="eps">-</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="noDataMsg" class="alert alert-warning" style="display: none;">
+        <i class="fas fa-exclamation-triangle"></i>
+        <strong>توجه:</strong> اطلاعات مالی برای این نماد یافت نشد. لطفا ابتدا گزارش مالی را آپلود کنید.
+        <br>
+        <a href="/upload" class="btn btn-warning mt-2">
+            <i class="fas fa-upload"></i> آپلود گزارش مالی
+        </a>
+    </div>
+
+    <div id="loadingMsg" class="text-center" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">در حال بارگذاری...</span>
+        </div>
+        <p class="mt-3">در حال انجام تحلیل بنیادی...</p>
+    </div>
+</div>
+
+<script>
+    function runAnalysis() {
+        document.getElementById('loadingMsg').style.display = 'block';
+        document.getElementById('analysisResult').style.display = 'none';
+        document.getElementById('noDataMsg').style.display = 'none';
+        
+        axios.get('/api/fundamental/analyze/{{ symbol_code }}')
+            .then(response => {
+                if (response.data.success) {
+                    displayAnalysisResults(response.data.data);
+                } else {
+                    document.getElementById('noDataMsg').style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (error.response && error.response.status === 404) {
+                    document.getElementById('noDataMsg').style.display = 'block';
+                } else {
+                    alert('خطا در انجام تحلیل');
+                }
+            })
+            .finally(() => {
+                document.getElementById('loadingMsg').style.display = 'none';
+            });
+    }
+    
+    function displayAnalysisResults(data) {
+        document.getElementById('analysisResult').style.display = 'block';
+        
+        // Summary
+        const summary = data.summary || {};
+        document.getElementById('rating').textContent = summary.rating || '-';
+        document.getElementById('score').textContent = (summary.score || 0).toFixed(1) + '/100';
+        document.getElementById('recommendation').textContent = summary.recommendation || '-';
+        
+        // Strengths and Weaknesses
+        const strengthsList = document.getElementById('strengths');
+        const weaknessesList = document.getElementById('weaknesses');
+        strengthsList.innerHTML = '';
+        weaknessesList.innerHTML = '';
+        
+        (summary.strengths || []).forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            strengthsList.appendChild(li);
+        });
+        
+        (summary.weaknesses || []).forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            weaknessesList.appendChild(li);
+        });
+        
+        // Ratios
+        const ratios = data.ratios || {};
+        
+        // Liquidity
+        const liquidity = ratios.liquidity || {};
+        document.getElementById('currentRatio').textContent = liquidity.current_ratio || '-';
+        document.getElementById('quickRatio').textContent = liquidity.quick_ratio || '-';
+        
+        // Profitability
+        const profitability = ratios.profitability || {};
+        document.getElementById('grossMargin').textContent = (profitability.gross_margin || 0) + '%';
+        document.getElementById('operatingMargin').textContent = (profitability.operating_margin || 0) + '%';
+        document.getElementById('netMargin').textContent = (profitability.net_margin || 0) + '%';
+        document.getElementById('roa').textContent = (profitability.roa || 0) + '%';
+        document.getElementById('roe').textContent = (profitability.roe || 0) + '%';
+        
+        // Leverage
+        const leverage = ratios.leverage || {};
+        document.getElementById('debtToEquity').textContent = leverage.debt_to_equity || '-';
+        document.getElementById('debtToAssets').textContent = leverage.debt_to_assets || '-';
+        
+        // Efficiency
+        const efficiency = ratios.efficiency || {};
+        document.getElementById('assetTurnover').textContent = efficiency.asset_turnover || '-';
+        
+        // Per Share
+        const perShare = ratios.per_share || {};
+        document.getElementById('eps').textContent = formatNumber(perShare.eps || 0) + ' ریال';
+    }
+</script>
+{% endblock %}
