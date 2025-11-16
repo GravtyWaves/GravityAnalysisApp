@@ -1,11 +1,236 @@
 # TEAM RULES & PROTOCOL
-# GravityAnalysisApp - Mandatory for ALL 12 Team Members
+# GravityAnalysisApp - Mandatory for ALL 15 Team Members
 
 ---
 
 ## 🎯 MISSION STATEMENT
 
 We are building GravityAnalysisApp - a professional web-based platform for analyzing Iranian stock market using **EXISTING microservices**. Our work is collaborative, democratic, high-quality, and user-focused.
+
+---
+
+## 🔴 UNIVERSAL SOFTWARE DEVELOPMENT STANDARDS
+
+**APPLIES TO ALL CODE, ALL PROJECTS, ALL TEAM MEMBERS**
+
+These standards are **NON-NEGOTIABLE** and apply to every line of code, every commit, every file created.
+
+### 📋 Quick Reference Card
+
+```
+✅ REQUIRED FOR ALL CODE:
+├─ English only (code, comments, docs, commits)
+├─ Type hints/annotations on ALL functions
+├─ Complete docstrings (Google style)
+├─ Specific error handling with context
+├─ Structured logging (use logger, not print)
+├─ 95%+ test coverage
+├─ Conventional Commit messages
+├─ Search before creating files
+└─ Security best practices (no hardcoded secrets)
+
+❌ NEVER ALLOWED:
+├─ Non-English in technical content
+├─ Hardcoded secrets or credentials
+├─ Missing type hints/annotations
+├─ Untested code
+├─ Duplicate files (README_NEW.md, CONFIG_V2.py)
+├─ Generic exception handling (catch-all)
+├─ Silent failures
+├─ Non-descriptive variable names
+└─ Committing sensitive files (.env, credentials)
+```
+
+### 1️⃣ FILE MANAGEMENT POLICY (CRITICAL)
+
+**ALWAYS Search Before Creating:**
+```
+Step 1: Search for Existing Files
+   ↓
+   Use: file_search, semantic_search, grep_search
+   Look for: Similar names, purposes, functionality
+   ↓
+Step 2: File Found?
+   ├─→ YES → UPDATE existing file ✅
+   │         Never create duplicates
+   │         Edit and improve existing content
+   └─→ NO → CREATE new file ✅
+             Only if truly necessary
+             Follow naming conventions
+```
+
+**Examples:**
+```bash
+❌ BAD: Create "utils_new.py" when "utils.py" exists
+✅ GOOD: Add new functions to existing "utils.py"
+
+❌ BAD: Create "README_UPDATED.md" when "README.md" exists
+✅ GOOD: Update existing "README.md" with new content
+
+❌ BAD: Create "config_v2.json" when "config.json" exists
+✅ GOOD: Update "config.json" or use versioning strategy
+```
+
+### 2️⃣ TESTING WORKFLOW (MANDATORY)
+
+**NO CODE COMMITTED WITHOUT TESTS**
+
+```
+Step 1: Write Tests (95%+ Coverage)
+   ↓
+Step 2: Run Tests (pytest, coverage)
+   ↓
+Step 3: All Pass?
+   ├─→ YES → Commit & Push ✅
+   └─→ NO → Fix Code/Tests → Step 2
+```
+
+**Requirements:**
+- ✅ 95%+ coverage for business logic
+- ✅ Unit tests for ALL functions/classes
+- ✅ Integration tests for external dependencies
+- ✅ Performance tests for critical paths
+- ✅ Use AAA pattern (Arrange, Act, Assert)
+
+**Commands:**
+```bash
+# Run all tests with coverage
+pytest -v --cov=app --cov-report=term --cov-report=html
+
+# Fail if coverage below 95%
+pytest --cov=app --cov-fail-under=95
+
+# Run specific test types
+pytest tests/unit/ -v
+pytest tests/integration/ -v -m integration
+pytest tests/e2e/ -v -m e2e
+```
+
+### 3️⃣ GIT STANDARDS (Conventional Commits)
+
+**Format:**
+```
+<type>(<scope>): <subject>
+
+[optional body]
+
+[optional footer]
+```
+
+**Types:** feat, fix, refactor, docs, test, chore, style, perf, ci, build
+
+**Examples:**
+```bash
+✅ feat(auth): add OAuth2 authentication support
+✅ fix(database): resolve connection pool exhaustion
+✅ refactor(api): simplify error handling middleware
+✅ docs(readme): update installation instructions
+✅ test(services): add integration tests for GravityTSE
+
+❌ "fixed stuff"              # Too vague
+❌ "WIP"                      # Not descriptive
+❌ "updates"                  # No context
+❌ "ajouter une fonction"     # Not English
+```
+
+**Commit Message Rules:**
+- ✅ Use English only
+- ✅ Use imperative mood ("add" not "added")
+- ✅ Keep subject under 72 characters
+- ✅ Capitalize first letter
+- ❌ Don't end subject with period
+
+### 4️⃣ CODE QUALITY STANDARDS
+
+**Type Hints (100% Required):**
+```python
+# ✅ GOOD - Complete type hints
+from typing import Optional, List, Dict, Union
+
+def calculate_total(
+    items: List[Dict[str, Union[str, float]]],
+    discount: Optional[float] = None,
+    tax_rate: float = 0.1
+) -> float:
+    """Calculate total with discount and tax."""
+    # Implementation...
+    return total
+
+# ❌ BAD - No type hints
+def calculate_total(items, discount=None, tax_rate=0.1):
+    return total
+```
+
+**Docstrings (Google Style - 100% Required):**
+```python
+def process_payment(amount: float, user_id: int) -> PaymentResult:
+    """
+    Process payment with validation and error handling.
+    
+    Args:
+        amount: Payment amount in IRR (must be positive)
+        user_id: ID of user making payment
+        
+    Returns:
+        PaymentResult with success status and transaction ID
+        
+    Raises:
+        ValueError: If amount is not positive
+        InsufficientFundsError: If user has insufficient funds
+        PaymentError: If payment processing fails
+        
+    Example:
+        >>> result = process_payment(100000.0, 123)
+        >>> print(result.success)
+        True
+    """
+```
+
+**Error Handling:**
+```python
+# ✅ GOOD - Specific exceptions with context
+try:
+    result = external_service.call()
+except requests.Timeout as e:
+    logger.error(f"Service timeout: {e}")
+    raise ServiceUnavailableError("External service timed out")
+except requests.ConnectionError as e:
+    logger.error(f"Connection failed: {e}")
+    raise ServiceUnavailableError("Cannot connect to service")
+
+# ❌ BAD - Generic catch-all
+try:
+    result = external_service.call()
+except Exception:
+    pass  # Silent failure!
+```
+
+### 5️⃣ SECURITY STANDARDS
+
+**Never Hardcode Secrets:**
+```python
+# ✅ GOOD - Environment variables
+import os
+DATABASE_URL = os.getenv('DATABASE_URL')
+API_KEY = os.getenv('API_KEY')
+
+# ❌ BAD - Hardcoded secrets
+DATABASE_URL = "postgresql://admin:SuperSecret123@db.example.com/mydb"
+API_KEY = "sk-1234567890abcdefghijklmnopqrstuvwxyz"
+```
+
+**Parametrized Queries:**
+```python
+# ✅ GOOD - Parametrized
+def get_user(email: str) -> Optional[User]:
+    query = "SELECT * FROM users WHERE email = ?"
+    return db.execute(query, (email,)).fetchone()
+
+# ❌ BAD - SQL injection risk!
+def get_user(email: str) -> Optional[User]:
+    query = f"SELECT * FROM users WHERE email = '{email}'"
+    return db.execute(query).fetchone()
+```
 
 ---
 
