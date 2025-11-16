@@ -8,9 +8,9 @@ This application **REQUIRES** 4 external microservices to function. You **MUST**
 
 **Quick Start**:
 ```powershell
-.\start-microservices.ps1   # Start all microservices
-.\verify-microservices.ps1  # Verify they're running
-python app.py               # Then start this app
+.\start-microservices.ps1          # Start all microservices
+.\scripts\verify-microservices.ps1 # Verify they're running
+python app.py                      # Then start this app
 ```
 
 See [MICROSERVICES_SETUP.md](MICROSERVICES_SETUP.md) for detailed instructions.
@@ -63,6 +63,16 @@ Visit http://localhost:5000 to access the application.
 ## Quick Start
 
 See [README_FA.md](README_FA.md) for detailed Persian documentation.
+
+## Documentation
+
+- **[QUICKSTART.md](QUICKSTART.md)** - Quick setup guide (Persian)
+- **[INSTALLATION_GUIDE.md](INSTALLATION_GUIDE.md)** - Detailed installation (Persian)
+- **[MICROSERVICES_SETUP.md](MICROSERVICES_SETUP.md)** - Microservices setup
+- **[docs/API_DOCUMENTATION.md](docs/API_DOCUMENTATION.md)** - API reference
+- **[docs/TEAM_STRUCTURE.md](docs/TEAM_STRUCTURE.md)** - Team organization
+- **[docs/CODING_STANDARDS.md](docs/CODING_STANDARDS.md)** - Code standards
+- **[docs/WORKFLOW.md](docs/WORKFLOW.md)** - Development workflow
 
 ## License
 

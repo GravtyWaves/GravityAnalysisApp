@@ -55,19 +55,19 @@ foreach ($service in $services) {
     
     # Create startup command
     $command = @"
-cd '$($service.Path)'
-`$host.UI.RawUI.WindowTitle = '$($service.Name) - Port $($service.Port)'
-if (Test-Path '.\venv\Scripts\Activate.ps1') {
+cd '{0}'
+`$host.UI.RawUI.WindowTitle = '{1} - Port {2}'
+if (Test-Path '.\venv\Scripts\Activate.ps1') {{
     .\venv\Scripts\Activate.ps1
-} else {
+}} else {{
     Write-Host 'Virtual environment not found. Creating...' -ForegroundColor Yellow
     python -m venv venv
     .\venv\Scripts\Activate.ps1
     pip install -r requirements.txt
-}
-Write-Host '🚀 Starting $($service.Name)...' -ForegroundColor $($service.Color)
+}}
+Write-Host '🚀 Starting {1}...' -ForegroundColor {3}
 python app.py
-"@
+"@ -f $service.Path, $service.Name, $service.Port, $service.Color
     
     # Start in new PowerShell window
     Start-Process powershell -ArgumentList "-NoExit", "-Command", $command
