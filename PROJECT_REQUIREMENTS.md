@@ -587,12 +587,23 @@
 
 ## 👥 Team Role Assignments (Enhanced)
 
-### Core Team (Existing 12 members)
-All roles from TEAM_STRUCTURE.md remain
+### Core Team (12 members from TEAM_STRUCTURE.md)
+All original roles remain unchanged
 
-### Additional Specialists Needed
+### Additional Specialists
 
-#### 13. Machine Learning Engineer - Dr. Wei Chen (China) 🇨🇳
+#### 13. Git Workflow Manager & Version Control Specialist - Carlos Mendes (Portugal) 🇵🇹
+**Expertise**: Git workflows, repository automation, commit organization
+**Responsibilities**:
+- Monitor repository changes (automated every 30 min)
+- Organize commits when changes exceed 50 files
+- Ensure Conventional Commits standard compliance
+- Categorize file changes logically
+- Automated commit and push workflow
+- Maintain clean Git history
+- Version control best practices
+
+#### 14. Machine Learning Engineer - Dr. Wei Chen (China) 🇨🇳
 **Expertise**: Time series forecasting, feature engineering, model deployment
 **Responsibilities**:
 - Build dollar price forecast models
@@ -602,7 +613,7 @@ All roles from TEAM_STRUCTURE.md remain
 - Hyperparameter tuning
 - Model deployment and monitoring
 
-#### 14. Financial Analyst/Quant - Amira Hassan (Egypt) 🇪🇬
+#### 15. Financial Analyst/Quant - Amira Hassan (Egypt) 🇪🇬
 **Expertise**: Equity valuation, financial modeling, scenario analysis
 **Responsibilities**:
 - Define valuation methodologies
@@ -622,6 +633,7 @@ All roles from TEAM_STRUCTURE.md remain
 - Test Coverage: > 80%
 - Uptime: > 99.5%
 - Report Generation: < 10s for 50-page document
+- Git Commit Quality: 100% Conventional Commits compliance
 
 ### User Metrics
 - Report customization usage: > 40%
@@ -634,6 +646,7 @@ All roles from TEAM_STRUCTURE.md remain
 - High-priority bugs: < 3
 - Code review approval: 100% within 24h
 - Documentation completeness: 100%
+- Uncommitted work at day end: 0 files (automated)
 
 ---
 
@@ -669,12 +682,13 @@ All roles from TEAM_STRUCTURE.md remain
 8. **Security Mindset**: Think about vulnerabilities
 9. **User-Centric**: Build for Iranian stock market analysts
 10. **Iterate & Improve**: Continuous improvement
+11. **Trust Carlos**: When changes > 50 files, Git Workflow Manager handles commits automatically
 
 ---
 
 **Project Start**: Ready when team votes YES
 **Estimated Duration**: 18-20 sprints (9-10 months)
-**Team Size**: 14 members (12 core + 2 specialists)
+**Team Size**: 15 members (12 core + 3 specialists)
 **Complexity**: High (ML + Finance + Reporting)
 **Risk**: Medium (Microservices dependency, ML accuracy)
 

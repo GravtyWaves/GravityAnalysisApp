@@ -282,7 +282,16 @@ git checkout -b docs/ISSUE-101-update-api-docs
 git checkout -b refactor/ISSUE-202-optimize-db-queries
 ```
 
-### 4. Commit Message Format
+### 4. Commit Message Format (Conventional Commits)
+
+**Standard**: We follow [Conventional Commits](https://www.conventionalcommits.org/) specification
+
+**Automated Management**: 
+- When uncommitted changes exceed 50 files, Carlos (Git Workflow Manager) automatically:
+  1. Categorizes files logically
+  2. Creates separate commits for each category
+  3. Ensures all commits follow this format
+  4. Pushes to GitHub automatically
 
 ```
 <type>(<scope>): <subject>
@@ -300,8 +309,34 @@ git checkout -b refactor/ISSUE-202-optimize-db-queries
 - `refactor`: Code restructuring
 - `test`: Adding tests
 - `chore`: Maintenance
+- `perf`: Performance improvements
+- `ci`: CI/CD changes
+- `build`: Build system changes
 
-**Example:**
+**Scopes:**
+- `database`: Database layer
+- `services`: Microservices integration
+- `ui`: User interface/templates
+- `api`: API endpoints
+- `config`: Configuration files
+- `tests`: Test suite
+- `docs`: Documentation
+- `setup`: Setup/installation
+- `git`: Git configuration
+
+**Examples:**
+```
+feat(database): Add database layer with SQLite manager
+feat(services): Add microservices integration layer
+feat(ui): Add complete RTL Persian UI with Bootstrap 5
+docs(team): Add comprehensive team documentation
+chore(setup): Add project setup and configuration files
+test: Add testing utilities and sample data loader
+fix(api): Fix timeout handling in market data endpoint
+perf(database): Optimize query performance with indexes
+```
+
+**Full Example:**
 ```
 feat(market-data): integrate GravityTSE microservice
 
@@ -312,6 +347,83 @@ feat(market-data): integrate GravityTSE microservice
 
 Closes #123
 Reviewed-by: Yuki Tanaka, Elena Rodriguez
+```
+
+**Automated Categorization** (when changes > 50 files):
+```powershell
+# Carlos's automated workflow:
+Category: Database     → feat(database): Add database layer (2 files)
+Category: Services     → feat(services): Add microservices integration (5 files)
+Category: Templates    → feat(ui): Add RTL Persian templates (9 files)
+Category: Config       → chore(setup): Add configuration files (3 files)
+Category: Scripts      → feat(scripts): Add automation scripts (3 files)
+Category: Tests        → test: Add test utilities (2 files)
+Category: Docs         → docs(team): Add team documentation (9 files)
+Category: Core         → feat(core): Add Flask application (2 files)
+
+Result: 8 clean, logical commits automatically pushed ✅
+```
+
+---
+
+## Automated Git Workflow (Carlos - Git Workflow Manager)
+
+### Monitoring System
+- **Frequency**: Every 30 minutes
+- **Trigger**: Uncommitted changes > 50 files
+- **Action**: Automatic categorization and commit
+- **Notification**: Team alert when completed
+
+### Workflow Process
+```
+1. Monitor repository changes every 30 min
+   ↓
+2. Count uncommitted files
+   ↓
+3. If count > 50 files:
+   ↓
+4. Alert team: "⚠️ 54 files changed - organizing commits..."
+   ↓
+5. Categorize files:
+   - Database layer
+   - Services layer
+   - Templates/UI
+   - Configuration
+   - Documentation
+   - Tests
+   - Scripts
+   - Core application
+   ↓
+6. Create commit for each category
+   - Use Conventional Commits format
+   - Include file count
+   - List all files changed
+   ↓
+7. Push all commits to GitHub
+   ↓
+8. Notify team: "✅ 8 commits created and pushed"
+```
+
+### Benefits
+- ✅ Never lose uncommitted work
+- ✅ Clean, logical Git history
+- ✅ Easy to track changes
+- ✅ Easy to revert if needed
+- ✅ Automated workflow
+- ✅ Team can focus on coding
+
+### Manual Override
+If you need to commit manually before threshold:
+```bash
+# Normal workflow - Carlos will organize if >50 files
+git add .
+git commit -m "feat(your-scope): your message"
+git push origin main
+
+# Emergency override - commit everything as-is
+git add .
+git commit -m "chore: manual commit - bypass automation"
+git push origin main
 ```
 
 ---

@@ -545,6 +545,64 @@ Optional but recommended:
 | Documentation | Emma (Tech Writer) |
 | Process | Olga (Scrum Master) |
 | Financial domain | Sarah (Domain Expert) |
+| Git/Commits | Carlos (Git Workflow Manager) |
+
+---
+
+## 🔄 AUTOMATED GIT WORKFLOW
+
+### Git Workflow Manager - Carlos Mendes
+
+**Automatic Monitoring**:
+- Repository scanned every 30 minutes
+- Alert triggered when uncommitted changes exceed 50 files
+- Automatic categorization and commit organization
+- Follows Conventional Commits standard strictly
+
+**What Happens When Changes > 50 Files**:
+1. ⚠️ Alert notification sent to team
+2. 📂 Files categorized into logical groups:
+   - Database layer
+   - Services layer
+   - Templates/UI
+   - Configuration
+   - Documentation
+   - Tests
+   - Scripts
+   - Core application
+3. 📝 Separate commit created for each category
+4. ✅ All commits follow Conventional Commits format
+5. 🚀 Automatic push to GitHub
+6. 📢 Team notification with summary
+
+**Conventional Commits Format**:
+```
+<type>(<scope>): <subject>
+
+Types: feat, fix, docs, style, refactor, test, chore, perf, ci
+Scopes: database, services, ui, api, config, tests, docs, setup
+
+Examples:
+feat(database): Add database layer with SQLite manager
+fix(services): Fix timeout handling in microservice calls
+docs(team): Add comprehensive team documentation
+test(api): Add integration tests for endpoints
+chore(setup): Update project configuration
+```
+
+**Your Responsibility**:
+- Write code, don't worry about commits
+- When you have >50 changed files, Carlos handles it
+- Focus on quality code, not Git organization
+- Trust the automated workflow
+
+**Benefits**:
+- ✅ Clean Git history always
+- ✅ No bulk commits
+- ✅ Logical categorization
+- ✅ Easy to track changes
+- ✅ Easy to revert if needed
+- ✅ No work lost
 
 ---
 
@@ -567,7 +625,7 @@ Optional but recommended:
 
 **Version**: 1.0.0  
 **Effective Date**: 2024-11-16  
-**Mandatory for**: ALL 12 team members  
+**Mandatory for**: ALL 13 team members  
 **Review Frequency**: Monthly  
 **Maintained by**: Scrum Master (Olga Petrov)
 

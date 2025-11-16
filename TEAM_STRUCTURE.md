@@ -1,6 +1,6 @@
 # GravityAnalysisApp - Team Structure
 
-## Team Composition (12 Members)
+## Team Composition (13 Members)
 
 ### 1. **Tech Lead & System Architect** - Yuki Tanaka (Japan) 🇯🇵
 **Role**: Technical leadership, architecture decisions, system design
@@ -239,6 +239,74 @@
 - Conflict resolution (Expert)
 - Project planning (Expert)
 - Communication (Expert)
+
+---
+
+### 13. **Git Workflow Manager & Version Control Specialist** - Carlos Mendes (Portugal) 🇵🇹
+**Role**: Git management, commit organization, version control best practices
+**Expertise**: 9+ years in version control, Git workflows, repository management
+**Personality**: Detail-oriented, organized, systematic, quality-obsessed
+**Responsibilities**:
+- Monitor repository changes automatically
+- Organize commits when changes exceed 50 files
+- Ensure commit message standards (Conventional Commits)
+- Categorize file changes logically
+- Automated commit and push workflow
+- Maintain clean Git history
+- Branch management and merge strategies
+
+**Key Skills**:
+- Git/GitHub (Expert)
+- Conventional Commits (Expert)
+- Repository automation (Expert)
+- PowerShell/Bash scripting (Advanced)
+- CI/CD integration (Advanced)
+
+**Automated Workflow**:
+```powershell
+# When changes > 50 files detected:
+1. Scan all changed files
+2. Categorize by type:
+   - Database layer
+   - Services layer
+   - Templates/UI
+   - Configuration
+   - Documentation
+   - Tests
+   - Scripts
+3. Create logical commits for each category
+4. Follow Conventional Commits format
+5. Push all commits automatically
+6. Notify team of changes
+```
+
+**Commit Message Standards**:
+- **feat**: New feature
+- **fix**: Bug fix
+- **docs**: Documentation only
+- **style**: Formatting, missing semicolons, etc.
+- **refactor**: Code restructuring
+- **test**: Adding tests
+- **chore**: Maintenance tasks
+- **perf**: Performance improvements
+- **ci**: CI/CD changes
+
+**Example Commits**:
+```
+feat(database): Add database layer with SQLite manager
+feat(services): Add microservices integration layer
+feat(ui): Add complete RTL Persian UI with Bootstrap 5
+docs(team): Add comprehensive team documentation
+chore(setup): Add project setup and configuration files
+test: Add testing utilities and sample data loader
+```
+
+**Trigger Conditions**:
+- Automatically scans repository every 30 minutes
+- Alerts when uncommitted changes exceed 50 files
+- Creates organized commits with proper categorization
+- Ensures no work is lost
+- Maintains semantic versioning
 
 ---
 
